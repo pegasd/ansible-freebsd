@@ -1,0 +1,9 @@
+---
+- name: nginx and certbot packages
+  community.general.pkgng:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - nginx
+    - py39-certbot
+...

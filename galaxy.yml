@@ -1,0 +1,9 @@
+---
+namespace: pegasd
+name: freebsd
+authors:
+  - pegasd
+version: 0.1.0
+license: BSD
+readme: README.md
+...
