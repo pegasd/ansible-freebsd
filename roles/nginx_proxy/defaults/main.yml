@@ -1,6 +1,5 @@
 ---
 py: '3.9'
-default_vhost_enable: true
 vhosts: []
 # - name: foo.example.com
 #   proxy_to: localhost:12345
