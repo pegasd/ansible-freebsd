@@ -5,5 +5,48 @@
     state: present
   loop:
     - nginx
-    - py39-certbot
+    - 'py{{ py | replace(".", "") }}-certbot'
+    - 'py{{ py | replace(".", "") }}-certbot-nginx'
+
+- name: Enable nginx at startup
+  community.general.sysrc:
+    name: nginx_enable
+    value: 'YES'
+
+- name: VHost nginx directories
+  ansible.builtin.file:
+    state: directory
+    owner: root
+    group: wheel
+    path: '{{ item }}'
+  loop:
+    - '{{ nginx_directory }}/sites-available'
+    - '{{ nginx_directory }}/sites-enabled'
+
+- name: Nginx configuration
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: '{{ nginx_directory }}/nginx.conf'
+
+- name: Generate DH parameters
+  ansible.builtin.command:
+    cmd: 'openssl dhparam -out {{ nginx_directory }}/dhparam.pem 2048'
+    creates: '{{ nginx_directory }}/dhparam.pem'
+
+- name: Copy SSL nginx options
+  ansible.builtin.copy:
+    mode: preserve
+    remote_src: true
+    src: '/usr/local/lib/python{{ py }}/site-packages/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf'
+    dest: '{{ nginx_directory }}/options-ssl-nginx.conf'
+
+- include_tasks: generate-cert-standalone.yml
+  with_items: '{{ vhosts }}'
+  loop_control:
+    loop_var: vhost
+
+- include_tasks: vhost-proxy.yml
+  with_items: '{{ vhosts }}'
+  loop_control:
+    loop_var: vhost
 ...

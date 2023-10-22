@@ -1,0 +1,37 @@
+# HTTPS
+server {
+  listen 443 ssl http2;
+  server_name {{ vhost.name }};
+
+  # Allow large attachments
+  client_max_body_size 128M;
+
+  # SSL options and DH parameters
+  include {{ nginx_directory }}/options-ssl-nginx.conf;
+  ssl_dhparam {{ nginx_directory }}/dhparam.pem;
+
+  # Lets Encrypt
+  # All files managed by Certbot
+  ssl_certificate {{ letsencrypt_directory }}/live/{{ vhost.name }}/fullchain.pem;
+  ssl_certificate_key {{ letsencrypt_directory }}/live/{{ vhost.name }}/privkey.pem;
+
+  # Proxy
+  location / {
+    proxy_pass http://{{ vhost.proxy_to }};
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  # Logs
+  access_log /var/log/nginx/{{ vhost.name }}.access.log;
+  error_log /var/log/nginx/{{ vhost.name }}.error.log;
+}
+
+# Redirect HTTP to HTTPS
+server {
+  listen 80;
+  server_name {{ vhost.name }};
+  return 301 https://$host$request_uri;
+}

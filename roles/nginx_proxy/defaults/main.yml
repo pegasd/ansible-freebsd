@@ -1,4 +1,23 @@
 ---
-default_vhost: true
+py: '3.9'
+default_vhost_enable: true
 vhosts: []
+# - name: foo.example.com
+#   proxy_to: localhost:12345
+# - name: bar.example.com
+#   proxy_to: localhost:54321
+
+certbot_email: my@example.com
+
+#
+# Probably not a good idea to redefine these
+#
+nginx_directory: /usr/local/etc/nginx
+letsencrypt_directory: /usr/local/etc/letsencrypt
+certbot_create_command: >-
+  certbot certonly
+  --standalone --noninteractive --agree-tos
+  --pre-hook {{ letsencrypt_directory }}/renewal-hooks/pre/stop_services
+  --post-hook {{ letsencrypt_directory }}/renewal-hooks/post/start_services
+  -d {{ vhost.name }} --email {{ certbot_email }}
 ...
