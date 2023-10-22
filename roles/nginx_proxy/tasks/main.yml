@@ -49,4 +49,9 @@
   with_items: '{{ vhosts }}'
   loop_control:
     loop_var: vhost
+
+- name: Make sure nginx is running
+  ansible.builtin.service:
+    name: nginx
+    state: started
 ...
