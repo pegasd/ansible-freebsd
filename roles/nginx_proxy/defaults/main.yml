@@ -1,12 +1,12 @@
 ---
-py: '3.9'
+certbot_email: my@example.com
 vhosts: []
 # - name: foo.example.com
 #   proxy_to: localhost:12345
 # - name: bar.example.com
 #   proxy_to: localhost:54321
 
-certbot_email: my@example.com
+py: '3.9'
 
 #
 # Probably not a good idea to redefine these
