@@ -1,0 +1,54 @@
+---
+- name: nginx and certbot packages
+  community.general.pkgng:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - nginx
+    - 'py{{ py | replace(".", "") }}-certbot'
+    - 'py{{ py | replace(".", "") }}-certbot-nginx'
+
+- name: Enable nginx at startup
+  community.general.sysrc:
+    name: nginx_enable
+    value: 'YES'
+
+- name: VHost nginx directories
+  ansible.builtin.file:
+    state: directory
+    owner: root
+    group: wheel
+    path: '{{ item }}'
+  loop:
+    - '{{ nginx_directory }}/sites-available'
+    - '{{ nginx_directory }}/sites-enabled'
+
+- name: Nginx configuration
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: '{{ nginx_directory }}/nginx.conf'
+
+- name: Generate DH parameters
+  ansible.builtin.command:
+    cmd: 'openssl dhparam -out {{ nginx_directory }}/dhparam.pem 2048'
+    creates: '{{ nginx_directory }}/dhparam.pem'
+
+- name: Copy SSL nginx options
+  ansible.builtin.copy:
+    mode: preserve
+    remote_src: true
+    src: '/usr/local/lib/python{{ py }}/site-packages/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf'
+    dest: '{{ nginx_directory }}/options-ssl-nginx.conf'
+
+- name: Pre hook to stop nginx
+  ansible.builtin.copy:
+    src: certbot_stop_services_hook
+    dest: '{{ letsencrypt_directory }}/renewal-hooks/pre/stop_services'
+    mode: '0750'
+
+- name: Post hook to start nginx
+  ansible.builtin.copy:
+    src: certbot_start_services_hook
+    dest: '{{ letsencrypt_directory }}/renewal-hooks/post/start_services'
+    mode: '0750'
+...

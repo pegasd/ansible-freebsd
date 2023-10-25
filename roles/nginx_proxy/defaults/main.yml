@@ -6,6 +6,17 @@ vhosts: []
 # - name: bar.example.com
 #   proxy_to: localhost:54321
 
+enable_bootstrap: true
+
+cert_create_if_missing: true
+
+cert_renew_cron: true
+cert_renew_cron_minute: '0'
+cert_renew_cron_hour: '3'
+cert_renew_cron_weekday: '*'
+
+restart_nginx: true
+
 py: '3.9'
 
 #

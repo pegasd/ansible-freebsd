@@ -4,18 +4,6 @@
     path: '{{ letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
   register: cert
 
-- name: Pre hook to stop nginx
-  ansible.builtin.copy:
-    src: certbot_stop_services_hook
-    dest: '{{ letsencrypt_directory }}/renewal-hooks/pre/stop_services'
-    mode: '0750'
-
-- name: Post hook to start nginx
-  ansible.builtin.copy:
-    src: certbot_start_services_hook
-    dest: '{{ letsencrypt_directory }}/renewal-hooks/post/start_services'
-    mode: '0750'
-
 - name: 'Generate certificate for {{ vhost.name }}'
   ansible.builtin.command: '{{ certbot_create_command }}'
   when: not cert.stat.exists
