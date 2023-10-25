@@ -3,8 +3,8 @@ Address = {{ wireguard_address }}/{{ wireguard_network | split('/') | last }}
 ListenPort = {{ wireguard_port }}
 PrivateKey = {{ wireguard_private_key }}
 SaveConfig = false
-
 {% for client in wireguard_clients %}
+
 [Peer]
 # {{ client.name }}
 PublicKey = {{ client.public_key }}
