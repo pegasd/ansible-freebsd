@@ -1,0 +1,13 @@
+[Interface]
+Address = {{ wireguard_address }}/24
+ListenPort = {{ wireguard_port }}
+PrivateKey = {{ wireguard_private_key }}
+SaveConfig = false
+
+{% for client in wireguard_clients %}
+[Peer]
+# {{ client.name }}
+PublicKey = {{ client.public_key }}
+PersistentKeepalive = 10
+AllowedIPs {{ client.address }}/24
+{% endfor %}

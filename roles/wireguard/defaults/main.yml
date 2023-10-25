@@ -1,0 +1,7 @@
+---
+wireguard_conf_directory: /usr/local/etc/wireguard
+wireguard_port: '51280'
+wireguard_interface: 'wg0'
+
+wireguard_clients: []
+...

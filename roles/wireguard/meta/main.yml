@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple WireGuard configuration
+  role_name: wireguard
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...
