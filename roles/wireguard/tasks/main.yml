@@ -6,6 +6,7 @@
   loop:
     - wireguard
     - wireguard-tools
+    - libqrencode
 
 - name: WireGuard server configuration
   ansible.builtin.template:
