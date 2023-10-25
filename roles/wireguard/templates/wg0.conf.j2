@@ -1,5 +1,5 @@
 [Interface]
-Address = {{ wireguard_address }}/24
+Address = {{ wireguard_address }}/{{ wireguard_network | split('/') | last }}
 ListenPort = {{ wireguard_port }}
 PrivateKey = {{ wireguard_private_key }}
 SaveConfig = false
@@ -9,5 +9,5 @@ SaveConfig = false
 # {{ client.name }}
 PublicKey = {{ client.public_key }}
 PersistentKeepalive = 10
-AllowedIPs {{ client.address }}/24
+AllowedIPs = {{ client.address }}/32
 {% endfor %}

@@ -1,8 +1,8 @@
 [Interface]
-Address = {{ client.address }}
+Address = {{ client.address }}/{{ wireguard_network | split('/') | last }}
 PrivateKey = {{ client.private_key }}
 
 [Peer]
 PublicKey = {{ wireguard_public_key }}
-AllowedIPs = 10.7.7.0/24
+AllowedIPs = {{ wireguard_network }}
 Endpoint = {{ wireguard_endpoint }}:{{ wireguard_port }}
