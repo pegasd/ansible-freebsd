@@ -35,5 +35,5 @@
   ansible.builtin.service:
     name: wireguard
     enabled: yes
-    state: reload
+    state: reloaded
 ...
