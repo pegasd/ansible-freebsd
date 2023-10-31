@@ -4,13 +4,11 @@
     path: '{{ letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
   register: cert
 
-- name: 'Generate certificate for {{ vhost.name }} (standalone)'
+- name: 'Generate certificate for {{ vhost.name }} (cloudflare)'
   ansible.builtin.command: >-
     certbot certonly
     --noninteractive --agree-tos
-    --standalone
-    --pre-hook {{ letsencrypt_directory }}/renewal-hooks/pre/stop_services
-    --post-hook {{ letsencrypt_directory }}/renewal-hooks/post/start_services
+    --dns-cloudflare --dns-cloudflare-credentials {{ letsencrypt_directory }}/cloudflare/auth.ini
     -d {{ vhost.name }} --email {{ certbot_email }}
   when: not cert.stat.exists
 ...

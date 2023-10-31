@@ -39,16 +39,4 @@
     remote_src: true
     src: '/usr/local/lib/python{{ py }}/site-packages/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf'
     dest: '{{ nginx_directory }}/options-ssl-nginx.conf'
-
-- name: Pre hook to stop nginx
-  ansible.builtin.copy:
-    src: certbot_stop_services_hook
-    dest: '{{ letsencrypt_directory }}/renewal-hooks/pre/stop_services'
-    mode: '0750'
-
-- name: Post hook to start nginx
-  ansible.builtin.copy:
-    src: certbot_start_services_hook
-    dest: '{{ letsencrypt_directory }}/renewal-hooks/post/start_services'
-    mode: '0750'
 ...

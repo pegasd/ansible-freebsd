@@ -1,5 +1,10 @@
 ---
 certbot_email: my@example.com
+
+cert_create_method: standalone # currently supported: [ standalone, cloudflare ]
+
+certbot_cloudflare_token:
+
 vhosts: []
 # - name: foo.example.com
 #   proxy_to: localhost:12345
@@ -24,10 +29,4 @@ py: '3.9'
 #
 nginx_directory: /usr/local/etc/nginx
 letsencrypt_directory: /usr/local/etc/letsencrypt
-certbot_create_command: >-
-  certbot certonly
-  --standalone --noninteractive --agree-tos
-  --pre-hook {{ letsencrypt_directory }}/renewal-hooks/pre/stop_services
-  --post-hook {{ letsencrypt_directory }}/renewal-hooks/post/start_services
-  -d {{ vhost.name }} --email {{ certbot_email }}
 ...

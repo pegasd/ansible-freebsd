@@ -2,10 +2,25 @@
 - include_tasks: bootstrap.yml
   when: enable_bootstrap
 
+- include_tasks: bootstrap-standalone.yml
+  when: cert_create_method == 'standalone'
+
+- include_tasks: bootstrap-cloudflare.yml
+  when: cert_create_method == 'cloudflare'
+
 - include_tasks: generate-cert-standalone.yml
   with_items: '{{ vhosts }}'
   when:
     - cert_create_if_missing
+    - cert_create_method == 'standalone'
+  loop_control:
+    loop_var: vhost
+
+- include_tasks: generate-cert-cloudflare.yml
+  with_items: '{{ vhosts }}'
+  when:
+    - cert_create_if_missing
+    - cert_create_method == 'cloudflare'
   loop_control:
     loop_var: vhost
 

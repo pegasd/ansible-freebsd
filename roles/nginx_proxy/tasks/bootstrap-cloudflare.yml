@@ -1,0 +1,27 @@
+---
+- name: Remove pre/post certbot hooks since using cloudflare
+  ansible.builtin.file:
+    state: absent
+    path: '{{ item }}'
+  loop:
+    - '{{ letsencrypt_directory }}/renewal-hooks/pre/stop_services'
+    - '{{ letsencrypt_directory }}/renewal-hooks/post/start_services'
+
+- name: certbot cloudflare package
+  community.general.pkgng:
+    name: 'py{{ py | replace(".", "") }}-certbot-dns-cloudflare'
+    state: present
+
+- name: Cloudflare authentication directory
+  ansible.builtin.file:
+    state: directory
+    path: '{{ letsencrypt_directory }}/cloudflare'
+    mode: '0700'
+
+- name: Cloudflare authentication
+  ansible.builtin.template:
+    src: cloudflare.auth.j2
+    dest: '{{ letsencrypt_directory }}/cloudflare/auth.ini'
+    mode: '0600'
+  diff: false
+...
