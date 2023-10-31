@@ -8,6 +8,6 @@ SaveConfig = false
 [Peer]
 # {{ client.name }}
 PublicKey = {{ client.public_key }}
-PersistentKeepalive = 10
+PersistentKeepalive = {{ wireguard_keepalive }}
 AllowedIPs = {{ client.address }}/32
 {% endfor %}
