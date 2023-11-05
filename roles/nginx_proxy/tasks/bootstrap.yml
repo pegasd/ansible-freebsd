@@ -18,10 +18,7 @@
     state: directory
     owner: root
     group: wheel
-    path: '{{ item }}'
-  loop:
-    - '{{ nginx_directory }}/sites-available'
-    - '{{ nginx_directory }}/sites-enabled'
+    path: '{{ nginx_directory }}/vhosts'
 
 - name: Nginx configuration
   ansible.builtin.template:

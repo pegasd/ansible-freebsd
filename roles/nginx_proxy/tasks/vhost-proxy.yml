@@ -2,11 +2,5 @@
 - name: 'VHost configuration ({{ vhost.name }})'
   ansible.builtin.template:
     src: vhost-proxy.conf.j2
-    dest: '{{ nginx_directory }}/sites-available/{{ vhost.name }}.conf'
-
-- name: 'VHost enable ({{ vhost.name }})'
-  ansible.builtin.file:
-    src: '{{ nginx_directory }}/sites-available/{{ vhost.name }}.conf'
-    dest: '{{ nginx_directory }}/sites-enabled/{{ vhost.name }}.conf'
-    state: link
+    dest: '{{ nginx_directory }}/vhosts/{{ vhost.name }}.conf'
 ...
