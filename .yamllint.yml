@@ -1,4 +1,8 @@
 ---
-ignore:
-  - trusty
+yaml-files:
+- '*.yaml'
+- '*.yml'
+
+rules:
+  truthy: disable
 ...
