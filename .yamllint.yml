@@ -8,7 +8,9 @@ rules:
   brackets: disable
   colons: enable
   commas: enable
-  comments: enable
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 1
   comments-indentation: disable
   document-end: disable
   document-start: disable
