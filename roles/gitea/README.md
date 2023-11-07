@@ -1,0 +1,3 @@
+# gitea
+
+Simple Gitea configuration

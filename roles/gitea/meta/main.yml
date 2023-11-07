@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Gitea configuration
+  role_name: gitea
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

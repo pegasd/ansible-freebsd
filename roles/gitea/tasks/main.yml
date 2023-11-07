@@ -1,0 +1,28 @@
+---
+- name: Gitea package
+  community.general.pkgng:
+    name: gitea
+    state: present
+
+- name: Enable gitea service
+  community.general.sysrc:
+    name: gitea_enable
+    value: 'YES'
+    state: present
+  register: rc_enable
+
+- name: Configure gitea
+  ansible.builtin.lineinfile:
+    path: /usr/local/etc/gitea/conf/app.ini
+    regexp: '^#?{{ item.name }}( *)= '
+    line: '{{ item.name }}\1= {{ item.value }}'
+    backrefs: yes
+  with_items: '{{ gitea_settings }}'
+  register: config
+
+- name: Restart gitea service
+  ansible.builtin.service:
+    name: gitea
+    state: restarted
+  when: rc_enable.changed or config.changed
+...
