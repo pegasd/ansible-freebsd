@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Node Exporter configuration
+  role_name: node_exporter
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...
