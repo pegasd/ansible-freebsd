@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Prometheus configuration
+  role_name: prometheus
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

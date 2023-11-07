@@ -1,0 +1,22 @@
+---
+- name: Prometheus package
+  community.general.pkgng:
+    name: prometheus
+    state: present
+
+- name: Enable service
+  community.general.sysrc:
+    name: prometheus_enable
+    value: 'YES'
+    state: present
+
+- name: Configure prometheus
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /usr/local/etc/prometheus.yml
+
+- name: Restart prometheus service
+  ansible.builtin.service:
+    name: prometheus
+    state: started
+...
