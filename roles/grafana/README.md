@@ -1,0 +1,3 @@
+# grafana
+
+Simple Grafana configuration

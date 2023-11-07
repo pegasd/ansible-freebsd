@@ -1,0 +1,17 @@
+---
+- name: Grafana package
+  community.general.pkgng:
+    name: grafana9
+    state: present
+
+- name: Enable service
+  community.general.sysrc:
+    name: grafana_enable
+    value: 'YES'
+    state: present
+
+- name: Restart grafana service
+  ansible.builtin.service:
+    name: grafana
+    state: started
+...

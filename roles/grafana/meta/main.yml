@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Grafana configuration
+  role_name: grafana
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...
