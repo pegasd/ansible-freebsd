@@ -5,7 +5,7 @@ yaml-files:
 
 rules:
   braces: enable
-  brackets: enable
+  brackets: disable
   colons: enable
   commas: enable
   comments: enable
