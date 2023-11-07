@@ -26,10 +26,17 @@
   loop_control:
     loop_var: client
 
+- name: Enable wireguard
+  community.general.sysrc:
+    name: wireguard_enable
+    value: 'YES'
+    state: present
+
 - name: Configure wireguard interface
   community.general.sysrc:
     name: wireguard_interfaces
     value: '{{ wireguard_interface }}'
+    state: present
 
 - name: Enable and start wireguard
   ansible.builtin.service:
