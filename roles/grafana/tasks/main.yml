@@ -10,8 +10,15 @@
     value: 'YES'
     state: present
 
+- name: Configure grafana
+  ansible.builtin.lineinfile:
+    path: /usr/local/etc/grafana/grafana.ini
+    regexp: '^;?{{ item.name }} = '
+    line: '{{ item.name }} = {{ item.value }}'
+  with_items: '{{ grafana_settings }}'
+
 - name: Restart grafana service
   ansible.builtin.service:
     name: grafana
-    state: started
+    state: restarted
 ...
