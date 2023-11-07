@@ -9,14 +9,23 @@
     name: prometheus_enable
     value: 'YES'
     state: present
+  register: rc_enable
+
+- name: Set storage retention time
+  community.general.sysrc:
+    name: prometheus_args
+    value: '--storage.tsdb.retention.time={{ prometheus_retention_time }}'
+  register: rc_storage
 
 - name: Configure prometheus
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: /usr/local/etc/prometheus.yml
+  register: config
 
 - name: Restart prometheus service
   ansible.builtin.service:
     name: prometheus
-    state: started
+    state: restarted
+  when: rc_enable.changed or rc_storage.changed or config.changed
 ...
