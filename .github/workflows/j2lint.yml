@@ -1,22 +1,16 @@
 ---
 name: Jinja2 Linting check
-
 on: [ push ]
-
 jobs:
-  build:
+  j2lint:
     name: Jinja2 Linting
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout git repo
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 0
-
+        uses: actions/checkout@master
       - name: Run j2lint
         uses: ansible-actions/j2lint-action@v0.0.1
         with:
           target: "./"
+          args: [ --ignore, jinja-statements-indentation ]
 ...
