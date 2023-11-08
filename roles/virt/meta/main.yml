@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple virtualization configuration using bhyve
+  role_name: virt
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

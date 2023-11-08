@@ -1,0 +1,65 @@
+---
+- name: bhyve packages
+  community.general.pkgng:
+    name: plexmediaserver
+    state: present
+  loop:
+    - bhyve-firmware
+    - grub2-bhyve
+    - vm-bhyve
+
+- name: Enable VMM module
+  community.general.sysrc:
+    name: vmm_load
+    value: 'YES'
+    state: present
+    path: /boot/loader.conf
+  register: rc_vmm
+
+- name: Load VMM module
+  ansible.builtin.shell:
+    cmd: kldload vmm
+  when: rc_vmm.changed
+
+- name: Enable vm-bhyve
+  community.general.sysrc:
+    name: vm_enable
+    value: 'YES'
+    state: present
+
+- name: Configure vm-bhyve storage location
+  community.general.sysrc:
+    name: vm_dir
+    value: '{{ virt_storage_location }}'
+    state: present
+  when: virt_storage_location
+
+- name: Configure list of VMs to run at startup
+  community.general.sysrc:
+    name: vm_list
+    value: '{{ virt_vms_on_startup }}'
+    state: present
+  when: virt_vms_on_startup
+
+- name: Configure delay between starting VMs
+  community.general.sysrc:
+    name: vm_delay
+    value: '{{ virt_vm_delay }}'
+    state: present
+  when: virt_vm_delay
+
+- name: Initialize VM bridge interface
+  ansible.builtin.shell:
+    cmd: '{{ item }}'
+  loop:
+    - 'vm switch create {{ virt_interface }}'
+    - 'vm switch add {{ virt_interface }} {{ ansible_default_ipv4.interface }}'
+  when: interface not in ansible_interfaces
+  vars:
+    interface: 'vm-{{ virt_interface }}'
+
+- name: Initialize vm-bhyve
+  ansible.builtin.shell:
+    cmd: vm init
+    creates: '{{ virt_storage_location }}/.config'
+...

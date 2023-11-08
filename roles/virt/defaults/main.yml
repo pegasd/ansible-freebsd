@@ -1,0 +1,6 @@
+---
+virt_storage_location:
+virt_vms_on_startup: ''
+virt_vm_delay: 5
+virt_interface: public
+...
