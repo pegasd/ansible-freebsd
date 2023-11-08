@@ -23,8 +23,11 @@
     group: wheel
   register: client_config_dir
 
-- include_tasks: client-config.yml
-  with_items: '{{ wireguard_clients }}'
+- name: 'Client config for {{ client.name }}'
+  ansible.builtin.template:
+    src: client.conf.j2
+    dest: '{{ wireguard_conf_directory }}/clients_{{ wireguard_interface }}/{{ client.name }}.conf'
+  loop: '{{ wireguard_clients }}'
   loop_control:
     loop_var: client
   register: client_config
