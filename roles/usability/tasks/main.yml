@@ -1,0 +1,13 @@
+---
+- name: Usability recommended packages
+  community.general.pkgng:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ usability_packages }}'
+
+- name: Usability additional packages
+  community.general.pkgng:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ usability_additional_packages }}'
+...
