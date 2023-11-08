@@ -9,6 +9,7 @@
     name: grafana_enable
     value: 'YES'
     state: present
+  register: rc_enable
 
 - name: Configure grafana
   ansible.builtin.lineinfile:
@@ -16,9 +17,11 @@
     regexp: '^;?{{ item.name }} = '
     line: '{{ item.name }} = {{ item.value }}'
   with_items: '{{ grafana_settings }}'
+  register: config
 
 - name: Restart grafana service
   ansible.builtin.service:
     name: grafana
     state: restarted
+  when: rc_enable.changed or config.changed
 ...
