@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Jellyfin configuration
+  role_name: jellyfin
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

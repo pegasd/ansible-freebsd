@@ -1,0 +1,3 @@
+# jellyfin
+
+Simple Jellyfin configuration

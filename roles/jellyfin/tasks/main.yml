@@ -1,0 +1,27 @@
+---
+- name: Jellyfin package
+  community.general.pkgng:
+    name: jellyfin
+    state: present
+
+- name: Enable jellyfin service
+  community.general.sysrc:
+    name: jellyfin_enable
+    value: 'YES'
+    state: present
+  register: rc_enable
+
+- name: Configure jellyfin data directory
+  community.general.sysrc:
+    name: jellyfin_data_dir
+    value: '{{ jellyfin_data_dir }}'
+    state: present
+  register: rc_data_dir
+  when: jellyfin_data_dir
+
+- name: Restart jellyfin service
+  ansible.builtin.service:
+    name: jellyfin
+    state: restarted
+  when: rc_enable.changed or rc_data_dir.changed
+...
