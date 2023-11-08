@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple NFS server configuration
+  role_name: nfsd
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

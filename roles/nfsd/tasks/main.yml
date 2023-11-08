@@ -1,0 +1,38 @@
+---
+- name: Enable NFS-related services
+  community.general.sysrc:
+    name: '{{ item }}'
+    value: 'YES'
+    state: present
+  loop:
+    - rpcbind_enable
+    - rpc_lockd_enable
+    - rpc_statd_enable
+    - nfs_server_enable
+    - mountd_enable
+  register: rc_enable
+
+- name: Set NFS server arguments
+  community.general.sysrc:
+    name: nfs_server_flags
+    value: '{{ nfsd_flags }}'
+    state: present
+  register: rc_flags
+
+- name: Exports configuration
+  ansible.builtin.template:
+    src: exports.j2
+    dest: /etc/exports
+  register: config
+
+- name: Restart NFS services
+  ansible.builtin.service:
+    name: '{{ item }}'
+    state: restarted
+  loop:
+    - mountd
+    - lockd
+    - statd
+    - nfsd
+  when: rc_enable.changed or rc_flags.changed or config.changed
+...
