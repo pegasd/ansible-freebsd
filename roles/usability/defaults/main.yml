@@ -1,5 +1,5 @@
 ---
-usability_packages:
+usability_recommended_packages:
   - sudo
   - git
   - tmux
@@ -7,5 +7,5 @@ usability_packages:
   - zsh
   - htop
   - rsync
-usability_packages: []
+usability_additional_packages: []
 ...

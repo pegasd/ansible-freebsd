@@ -3,7 +3,7 @@
   community.general.pkgng:
     name: '{{ item }}'
     state: present
-  loop: '{{ usability_packages }}'
+  loop: '{{ usability_recommended_packages }}'
 
 - name: Usability additional packages
   community.general.pkgng:
