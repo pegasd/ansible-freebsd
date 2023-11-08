@@ -21,7 +21,6 @@
     mode: '0700'
     owner: root
     group: wheel
-  register: client_config_dir
 
 - name: 'Client config for {{ client.name }}'
   ansible.builtin.template:
@@ -30,7 +29,6 @@
   loop: '{{ wireguard_clients }}'
   loop_control:
     loop_var: client
-  register: client_config
 
 - name: Enable wireguard
   community.general.sysrc:
@@ -50,5 +48,5 @@
   ansible.builtin.service:
     name: wireguard
     state: restarted
-  when: config.changed or client_config_dir.changed or client_config.changed or rc_enable.changed or rc_interfaces.changed
+  when: config.changed or rc_enable.changed or rc_interfaces.changed
 ...
