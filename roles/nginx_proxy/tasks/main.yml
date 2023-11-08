@@ -1,14 +1,18 @@
 ---
-- include_tasks: bootstrap.yml
+- name: Bootstrap
+  ansible.builtin.include_tasks: bootstrap.yml
   when: enable_bootstrap
 
-- include_tasks: bootstrap-standalone.yml
+- name: Bootstrap for standalone certificate generation
+  ansible.builtin.include_tasks: bootstrap-standalone.yml
   when: cert_create_method == 'standalone'
 
-- include_tasks: bootstrap-cloudflare.yml
+- name: Bootstrap for Cloudflare certificate generation
+  ansible.builtin.include_tasks: bootstrap-cloudflare.yml
   when: cert_create_method == 'cloudflare'
 
-- include_tasks: generate-cert-standalone.yml
+- name: Generate certificate using standalone validation
+  ansible.builtin.include_tasks: generate-cert-standalone.yml
   with_items: '{{ vhosts }}'
   when:
     - cert_create_if_missing
@@ -16,7 +20,8 @@
   loop_control:
     loop_var: vhost
 
-- include_tasks: generate-cert-cloudflare.yml
+- name: Generate certificate using Cloudflare validation
+  ansible.builtin.include_tasks: generate-cert-cloudflare.yml
   with_items: '{{ vhosts }}'
   when:
     - cert_create_if_missing
@@ -24,7 +29,8 @@
   loop_control:
     loop_var: vhost
 
-- include_tasks: vhost-proxy.yml
+- name: Configure VHost proxy
+  ansible.builtin.include_tasks: vhost-proxy.yml
   with_items: '{{ vhosts }}'
   loop_control:
     loop_var: vhost
