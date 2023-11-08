@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple Plex Media Server configuration
+  role_name: plex
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...

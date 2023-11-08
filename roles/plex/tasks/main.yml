@@ -1,0 +1,27 @@
+---
+- name: Plex package
+  community.general.pkgng:
+    name: plexmediaserver
+    state: present
+
+- name: Enable Plex service
+  community.general.sysrc:
+    name: plexmediaserver_enable
+    value: 'YES'
+    state: present
+  register: rc_enable
+
+- name: Configure Plex data directory
+  community.general.sysrc:
+    name: plexmediaserver_support_path
+    value: '{{ plex_data_dir }}'
+    state: present
+  register: rc_data_dir
+  when: plex_data_dir
+
+- name: Restart Plex service
+  ansible.builtin.service:
+    name: plexmediaserver
+    state: restarted
+  when: rc_enable.changed or rc_data_dir.changed
+...
