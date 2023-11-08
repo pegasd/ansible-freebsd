@@ -10,4 +10,15 @@
     name: '{{ item }}'
     state: present
   loop: '{{ usability_additional_packages }}'
+
+- name: Disable sendmail
+  community.general.sysrc:
+    name: '{{ item }}_enable'
+    value: 'NO'
+    state: present
+  loop:
+    - sendmail
+    - sendmail_submit
+    - sendmail_outbound
+    - sendmail_msp_queue
 ...
