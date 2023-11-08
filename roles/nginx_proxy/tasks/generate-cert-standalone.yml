@@ -13,4 +13,10 @@
     --post-hook {{ letsencrypt_directory }}/renewal-hooks/post/start_services
     -d {{ vhost.name }} --email {{ certbot_email }}
   when: not cert.stat.exists
+  register: sa_certgen
+
+- name: 'Set changed flag ({{ vhost.name }})'
+  ansible.builtin.set_fact:
+    sa_certgen_changed: yes
+  when: sa_certgen.changed
 ...

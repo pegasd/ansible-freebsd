@@ -3,4 +3,10 @@
   ansible.builtin.template:
     src: vhost-proxy.conf.j2
     dest: '{{ nginx_directory }}/vhosts/{{ vhost.name }}.conf'
+  register: vhost_config
+
+- name: 'Set changed flag ({{ vhost.name }})'
+  ansible.builtin.set_fact:
+    vhost_config_changed: yes
+  when: vhost_config.changed
 ...

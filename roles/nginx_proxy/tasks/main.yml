@@ -1,15 +1,12 @@
 ---
 - include_tasks: bootstrap.yml
   when: enable_bootstrap
-  register: bootstrap
 
 - include_tasks: bootstrap-standalone.yml
   when: cert_create_method == 'standalone'
-  register: sa_bootstrap
 
 - include_tasks: bootstrap-cloudflare.yml
   when: cert_create_method == 'cloudflare'
-  register: cf_bootstrap
 
 - include_tasks: generate-cert-standalone.yml
   with_items: '{{ vhosts }}'
@@ -18,7 +15,6 @@
     - cert_create_method == 'standalone'
   loop_control:
     loop_var: vhost
-  register: sa_cert_gen
 
 - include_tasks: generate-cert-cloudflare.yml
   with_items: '{{ vhosts }}'
@@ -27,13 +23,11 @@
     - cert_create_method == 'cloudflare'
   loop_control:
     loop_var: vhost
-  register: cf_cert_gen
 
 - include_tasks: vhost-proxy.yml
   with_items: '{{ vhosts }}'
   loop_control:
     loop_var: vhost
-  register: vhost_config
 
 - import_tasks: renew-cron.yml
 
@@ -43,7 +37,9 @@
     state: restarted
   when: restart_nginx and
         (
-          bootstrap.changed or sa_bootstrap.changed or cf_bootstrap.changed or
-          sa_cert_gen.changed or cf_cert_gen.changed or vhost_config.changed
+          (enable_bootstrap and (rc_enable.changed or config.changed or dhparam.changed or ssl_options.changed))
+          or (sa_certgen_changed is defined and sa_certgen_changed)
+          or (cf_certgen_changed is defined and cf_certgen_changed)
+          or (vhost_config_changed is defined and vhost_config_changed)
         )
 ...
