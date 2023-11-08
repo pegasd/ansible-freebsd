@@ -12,6 +12,7 @@
   ansible.builtin.template:
     src: wg0.conf.j2
     dest: '{{ wireguard_conf_directory }}/{{ wireguard_interface }}.conf'
+  register: config
 
 - name: Directory for client configs
   ansible.builtin.file:
@@ -20,27 +21,31 @@
     mode: '0700'
     owner: root
     group: wheel
+  register: client_config_dir
 
 - include_tasks: client-config.yml
   with_items: '{{ wireguard_clients }}'
   loop_control:
     loop_var: client
+  register: client_config
 
 - name: Enable wireguard
   community.general.sysrc:
     name: wireguard_enable
     value: 'YES'
     state: present
+  register: rc_enable
 
 - name: Configure wireguard interface
   community.general.sysrc:
     name: wireguard_interfaces
     value: '{{ wireguard_interface }}'
     state: present
+  register: rc_interfaces
 
-- name: Enable and start wireguard
+- name: Restart wireguard service
   ansible.builtin.service:
     name: wireguard
-    enabled: yes
-    state: reloaded
+    state: restarted
+  when: config.changed or client_config_dir.changed or client_config.changed or rc_enable.changed or rc_interfaces.changed
 ...
