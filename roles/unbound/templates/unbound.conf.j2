@@ -1,0 +1,39 @@
+###
+#  unbound.conf
+##
+# {{ ansible_managed }}
+##
+# unbound.conf(5)
+###
+
+# The server clause sets the main parameters.
+server:
+{% for interface in unbound_interfaces %}
+  interface: {{ interface.address }}
+  access-control: {{ interface.network }} allow
+  private-address: {{ interface.network }}
+
+{% endfor %}
+  port: 53
+
+{% for zone in unbound_zones %}
+  local-zone: "{{ zone.name }}." {{ zone.type }}
+{% for record in zone.records %}
+    local-data: "{{ record.name }}.{{ zone.name }}. {{ record.type }} {{ record.dest }}"
+{% if 'ptr' in record and record.ptr %}
+    local-data-ptr: "{{ record.dest }} {{ record.name }}.{{ zone.name }}"
+{% endif %}
+{% endfor %}
+
+{% endfor %}
+
+# Python config section.
+# Check unbound.conf.sample for instructions on enabling
+python:
+
+# Dynamic library config section.
+# Check unbound.conf.sample for instructions on enabling
+dynlib:
+
+# Remote control config section.
+remote-control:

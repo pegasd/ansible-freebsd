@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple unbound configuration
+  role_name: unbound
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+...
