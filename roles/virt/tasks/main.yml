@@ -14,12 +14,7 @@
     value: 'YES'
     state: present
     path: /boot/loader.conf
-  register: rc_vmm
-
-- name: Load VMM module
-  ansible.builtin.shell:
-    cmd: kldload vmm
-  when: rc_vmm.changed
+  notify: Load VMM module
 
 - name: Enable vm-bhyve
   community.general.sysrc:
