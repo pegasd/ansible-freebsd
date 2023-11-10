@@ -58,5 +58,5 @@ http {
     }
 
     # Virtual Hosts
-    include {{ nginx_conf_directory }}/vhosts/*;
+    include {{ web_proxy_nginx_conf_directory }}/vhosts/*;
 }

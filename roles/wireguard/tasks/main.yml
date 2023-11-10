@@ -12,20 +12,26 @@
   ansible.builtin.template:
     src: wg0.conf.j2
     dest: '{{ wireguard_conf_directory }}/{{ wireguard_interface }}.conf'
+    owner: root
+    group: wheel
+    mode: '0600'
   notify: Restart wireguard
 
 - name: Directory for client configs
   ansible.builtin.file:
     path: '{{ wireguard_conf_directory }}/clients_{{ wireguard_interface }}'
     state: directory
-    mode: '0700'
     owner: root
     group: wheel
+    mode: '0700'
 
 - name: 'Client config for {{ client.name }}'
   ansible.builtin.template:
     src: client.conf.j2
     dest: '{{ wireguard_conf_directory }}/clients_{{ wireguard_interface }}/{{ client.name }}.conf'
+    owner: root
+    group: wheel
+    mode: '0640'
   loop: '{{ wireguard_clients }}'
   loop_control:
     loop_var: client

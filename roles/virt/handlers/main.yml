@@ -1,5 +1,7 @@
 ---
 - name: Load VMM module
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: kldload vmm
+  register: kldload
+  changed_when: kldload.rc != 0
 ...

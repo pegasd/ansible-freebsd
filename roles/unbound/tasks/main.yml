@@ -1,5 +1,5 @@
 ---
-- name: unbound package
+- name: Unbound package
   community.general.pkgng:
     name: unbound
     state: present
@@ -15,5 +15,8 @@
   ansible.builtin.template:
     src: unbound.conf.j2
     dest: /usr/local/etc/unbound/unbound.conf
+    owner: root
+    group: wheel
+    mode: '0644'
   notify: Restart unbound
 ...

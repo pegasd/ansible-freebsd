@@ -29,5 +29,8 @@
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: /usr/local/etc/prometheus.yml
+    owner: root
+    group: wheel
+    mode: '0644'
   notify: Restart prometheus
 ...

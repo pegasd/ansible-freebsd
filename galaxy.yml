@@ -1,9 +1,22 @@
 ---
 namespace: pegasd
 name: freebsd
+version: 1.0.0
+readme: README.md
+description: FreeBSD collection for servers
 authors:
   - pegasd
-version: 0.1.0
-license: BSD
-readme: README.md
+
+license:
+  - BSD-3-Clause
+
+tags:
+  - system
+  - tools
+  - security
+  - pkg
+  - networking
+  - storage
+
+repository: https://github.com/pegasd/ansible-freebsd
 ...

@@ -23,5 +23,8 @@
   ansible.builtin.template:
     src: exports.j2
     dest: /etc/exports
+    owner: root
+    group: wheel
+    mode: '0644'
   notify: Restart NFS services
 ...

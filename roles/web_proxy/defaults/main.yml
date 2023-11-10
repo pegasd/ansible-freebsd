@@ -22,6 +22,6 @@ web_proxy_python_version: '3.9'
 #
 # Probably not a good idea to redefine these
 #
-nginx_conf_directory: /usr/local/etc/nginx
-letsencrypt_directory: /usr/local/etc/letsencrypt
+web_proxy_nginx_conf_directory: /usr/local/etc/nginx
+web_proxy_letsencrypt_directory: /usr/local/etc/letsencrypt
 ...

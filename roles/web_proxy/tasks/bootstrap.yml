@@ -1,5 +1,5 @@
 ---
-- name: nginx and certbot packages
+- name: Nginx and certbot packages
   community.general.pkgng:
     name: '{{ item }}'
     state: present
@@ -19,18 +19,22 @@
     state: directory
     owner: root
     group: wheel
-    path: '{{ nginx_conf_directory }}/vhosts'
+    mode: '0755'
+    path: '{{ web_proxy_nginx_conf_directory }}/vhosts'
 
 - name: Nginx configuration
   ansible.builtin.template:
     src: nginx.conf.j2
-    dest: '{{ nginx_conf_directory }}/nginx.conf'
+    dest: '{{ web_proxy_nginx_conf_directory }}/nginx.conf'
+    owner: root
+    group: wheel
+    mode: '0644'
   notify: Restart nginx
 
 - name: Generate DH parameters
   ansible.builtin.command:
-    cmd: 'openssl dhparam -out {{ nginx_conf_directory }}/dhparam.pem 2048'
-    creates: '{{ nginx_conf_directory }}/dhparam.pem'
+    cmd: 'openssl dhparam -out {{ web_proxy_nginx_conf_directory }}/dhparam.pem 2048'
+    creates: '{{ web_proxy_nginx_conf_directory }}/dhparam.pem'
   notify: Restart nginx
 
 - name: Copy SSL nginx options
@@ -38,6 +42,6 @@
     mode: preserve
     remote_src: true
     src: '/usr/local/lib/python{{ web_proxy_python_version }}/site-packages/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf'
-    dest: '{{ nginx_conf_directory }}/options-ssl-nginx.conf'
+    dest: '{{ web_proxy_nginx_conf_directory }}/options-ssl-nginx.conf'
   notify: Restart nginx
 ...

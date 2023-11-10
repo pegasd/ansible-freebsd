@@ -1,17 +1,13 @@
 ---
-- name: 'Check if certificate for {{ vhost.name }} already exists'
-  stat:
-    path: '{{ letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
-  register: cert
-
-- name: 'Generate certificate for {{ vhost.name }} (standalone)'
-  ansible.builtin.command: >-
-    certbot certonly
-    --noninteractive --agree-tos
-    --standalone
-    --pre-hook {{ letsencrypt_directory }}/renewal-hooks/pre/stop_services
-    --post-hook {{ letsencrypt_directory }}/renewal-hooks/post/start_services
-    -d {{ vhost.name }} --email {{ certbot_email }}
-  when: not cert.stat.exists
+- name: 'Generate certificate using standalone for {{ vhost.name }}'
+  ansible.builtin.command:
+    cmd: >-
+      certbot certonly
+      --noninteractive --agree-tos
+      --standalone
+      --pre-hook {{ web_proxy_letsencrypt_directory }}/renewal-hooks/pre/stop_services
+      --post-hook {{ web_proxy_letsencrypt_directory }}/renewal-hooks/post/start_services
+      -d {{ vhost.name }} --email {{ certbot_email }}
+    creates: '{{ web_proxy_letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
   notify: Restart nginx
 ...

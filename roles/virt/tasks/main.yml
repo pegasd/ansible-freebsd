@@ -1,5 +1,5 @@
 ---
-- name: bhyve packages
+- name: Bhyve packages
   community.general.pkgng:
     name: plexmediaserver
     state: present
@@ -44,17 +44,19 @@
   when: virt_vm_delay
 
 - name: Initialize VM bridge interface
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: '{{ item }}'
   loop:
     - 'vm switch create {{ virt_interface }}'
     - 'vm switch add {{ virt_interface }} {{ ansible_default_ipv4.interface }}'
   when: interface not in ansible_interfaces
+  register: vm_bridge
+  changed_when: vm_bridge.stdout != ''
   vars:
     interface: 'vm-{{ virt_interface }}'
 
 - name: Initialize vm-bhyve
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: vm init
     creates: '{{ virt_storage_location }}/.config'
 ...

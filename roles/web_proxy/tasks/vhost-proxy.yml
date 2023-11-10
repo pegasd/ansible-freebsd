@@ -2,6 +2,9 @@
 - name: 'VHost configuration ({{ vhost.name }})'
   ansible.builtin.template:
     src: vhost-proxy.conf.j2
-    dest: '{{ nginx_conf_directory }}/vhosts/{{ vhost.name }}.conf'
+    dest: '{{ web_proxy_nginx_conf_directory }}/vhosts/{{ vhost.name }}.conf'
+    owner: root
+    group: wheel
+    mode: '0644'
   notify: Restart nginx
 ...

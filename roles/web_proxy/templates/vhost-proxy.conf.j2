@@ -7,13 +7,13 @@ server {
   client_max_body_size 128M;
 
   # SSL options and DH parameters
-  include {{ nginx_conf_directory }}/options-ssl-nginx.conf;
-  ssl_dhparam {{ nginx_conf_directory }}/dhparam.pem;
+  include {{ web_proxy_nginx_conf_directory }}/options-ssl-nginx.conf;
+  ssl_dhparam {{ web_proxy_nginx_conf_directory }}/dhparam.pem;
 
   # Lets Encrypt
   # All files managed by Certbot
-  ssl_certificate {{ letsencrypt_directory }}/live/{{ vhost.name }}/fullchain.pem;
-  ssl_certificate_key {{ letsencrypt_directory }}/live/{{ vhost.name }}/privkey.pem;
+  ssl_certificate {{ web_proxy_letsencrypt_directory }}/live/{{ vhost.name }}/fullchain.pem;
+  ssl_certificate_key {{ web_proxy_letsencrypt_directory }}/live/{{ vhost.name }}/privkey.pem;
 
   # Proxy
   location / {
