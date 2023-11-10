@@ -9,19 +9,13 @@
     name: jellyfin_enable
     value: 'YES'
     state: present
-  register: rc_enable
+  notify: Restart jellyfin
 
 - name: Configure jellyfin data directory
   community.general.sysrc:
     name: jellyfin_data_dir
     value: '{{ jellyfin_data_dir }}'
     state: present
-  register: rc_data_dir
+  notify: Restart jellyfin
   when: jellyfin_data_dir
-
-- name: Restart jellyfin service
-  ansible.builtin.service:
-    name: jellyfin
-    state: restarted
-  when: rc_enable.changed or rc_data_dir.changed
 ...
