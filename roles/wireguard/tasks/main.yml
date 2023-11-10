@@ -25,7 +25,7 @@
     group: wheel
     mode: '0700'
 
-- name: 'Client config for {{ client.name }}'
+- name: Client configuration files
   ansible.builtin.template:
     src: client.conf.j2
     dest: '{{ wireguard_conf_directory }}/clients_{{ wireguard_interface }}/{{ client.name }}.conf'
