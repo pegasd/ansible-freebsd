@@ -9,11 +9,5 @@
     name: node_exporter_enable
     value: 'YES'
     state: present
-  register: rc_enable
-
-- name: Restart node_exporter service
-  ansible.builtin.service:
-    name: node_exporter
-    state: restarted
-  when: rc_enable.changed
+  notify: Restart node_exporter
 ...
