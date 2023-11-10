@@ -1,3 +1,7 @@
-# usability
+# base
 
-Various usability packages and tweaks
+Base role to manage initial FreeBSD system configuration
+
+Currently handles:
+  - usability packages
+  - disable sendmail

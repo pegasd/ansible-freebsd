@@ -1,8 +1,8 @@
 ---
 galaxy_info:
   author: pegasd
-  description: Various usability packages and tweaks
-  role_name: usability
+  description: Base role to manage initial FreeBSD system configuration
+  role_name: base
   license: BSD
   platforms:
     - name: FreeBSD

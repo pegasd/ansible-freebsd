@@ -1,15 +1,21 @@
 ---
-- name: Usability recommended packages
+- name: Install recommended packages
   community.general.pkgng:
     name: '{{ item }}'
     state: present
-  loop: '{{ usability_recommended_packages }}'
+  loop: '{{ base_packages }}'
 
-- name: Usability additional packages
+- name: Remove outdated / unneeded packages
+  community.general.pkgng:
+    name: '{{ item }}'
+    state: absent
+  loop: '{{ base_packages_absent }}'
+
+- name: Install additional packages
   community.general.pkgng:
     name: '{{ item }}'
     state: present
-  loop: '{{ usability_additional_packages }}'
+  loop: '{{ base_extra_packages }}'
 
 - name: Disable sendmail
   community.general.sysrc:
