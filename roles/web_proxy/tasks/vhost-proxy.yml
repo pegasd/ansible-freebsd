@@ -1,0 +1,7 @@
+---
+- name: 'VHost configuration ({{ vhost.name }})'
+  ansible.builtin.template:
+    src: vhost-proxy.conf.j2
+    dest: '{{ nginx_conf_directory }}/vhosts/{{ vhost.name }}.conf'
+  notify: Restart nginx
+...

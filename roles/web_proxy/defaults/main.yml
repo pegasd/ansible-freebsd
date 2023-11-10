@@ -1,0 +1,27 @@
+---
+web_proxy_certbot_email: my@example.com
+
+# currently supported: [ standalone, cloudflare ]
+web_proxy_certbot_method: standalone
+
+web_proxy_certbot_cloudflare_token:
+
+web_proxy_vhosts: []
+# - name: foo.example.com
+#   proxy_to: localhost:12345
+# - name: bar.example.com
+#   proxy_to: localhost:54321
+
+web_proxy_certbot_renew_cron_enable: true
+web_proxy_certbot_renew_cron_minute: '0'
+web_proxy_certbot_renew_cron_hour: '3'
+web_proxy_certbot_renew_cron_weekday: '*'
+
+web_proxy_python_version: '3.9'
+
+#
+# Probably not a good idea to redefine these
+#
+nginx_conf_directory: /usr/local/etc/nginx
+letsencrypt_directory: /usr/local/etc/letsencrypt
+...

@@ -1,0 +1,35 @@
+---
+- name: Bootstrap
+  ansible.builtin.include_tasks: bootstrap.yml
+
+- name: Bootstrap for standalone certificate generation
+  ansible.builtin.include_tasks: bootstrap-standalone.yml
+  when: web_proxy_certbot_method == 'standalone'
+
+- name: Bootstrap for Cloudflare certificate generation
+  ansible.builtin.include_tasks: bootstrap-cloudflare.yml
+  when: web_proxy_certbot_method == 'cloudflare'
+
+- name: Generate certificate using standalone validation
+  ansible.builtin.include_tasks: generate-cert-standalone.yml
+  with_items: '{{ web_proxy_vhosts }}'
+  when: web_proxy_certbot_method == 'standalone'
+  loop_control:
+    loop_var: vhost
+
+- name: Generate certificate using Cloudflare validation
+  ansible.builtin.include_tasks: generate-cert-cloudflare.yml
+  with_items: '{{ web_proxy_vhosts }}'
+  when: web_proxy_certbot_method == 'cloudflare'
+  loop_control:
+    loop_var: vhost
+
+- name: Configure VHost proxy
+  ansible.builtin.include_tasks: vhost-proxy.yml
+  with_items: '{{ web_proxy_vhosts }}'
+  loop_control:
+    loop_var: vhost
+
+- name: Cron job to renew certificates
+  ansible.builtin.include_tasks: renew-cron.yml
+...

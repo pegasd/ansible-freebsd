@@ -1,0 +1,16 @@
+---
+- name: 'Check if certificate for {{ vhost.name }} already exists'
+  stat:
+    path: '{{ letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
+  register: cert
+
+- name: 'Generate certificate for {{ vhost.name }} (cloudflare)'
+  ansible.builtin.command: >-
+    certbot certonly
+    --noninteractive --agree-tos
+    --dns-cloudflare --dns-cloudflare-credentials {{ letsencrypt_directory }}/cloudflare/auth.ini
+    --dns-cloudflare-propagation-seconds 30
+    -d {{ vhost.name }} --email {{ certbot_email }}
+  when: not cert.stat.exists
+  notify: Restart nginx
+...
