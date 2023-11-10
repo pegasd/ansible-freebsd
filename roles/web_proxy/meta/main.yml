@@ -2,7 +2,7 @@
 galaxy_info:
   author: pegasd
   description: NGINX configuration for proxies with letsencrypt certificates
-  role_name: nginx_proxy
+  role_name: web_proxy
   license: BSD
   platforms:
     - name: FreeBSD
