@@ -1,0 +1,11 @@
+---
+- name: Restart NFS services
+  ansible.builtin.service:
+    name: '{{ item }}'
+    state: restarted
+  loop:
+    - mountd
+    - lockd
+    - statd
+    - nfsd
+...
