@@ -9,17 +9,11 @@
     name: unbound_enable
     value: 'YES'
     state: present
-  register: rc_enable
+  notify: Restart unbound
 
 - name: Configure unbound
   ansible.builtin.template:
     src: unbound.conf.j2
     dest: /usr/local/etc/unbound/unbound.conf
-  register: config
-
-- name: Restart unbound service
-  ansible.builtin.service:
-    name: unbound
-    state: restarted
-  when: rc_enable.changed or config.changed
+  notify: Restart unbound
 ...
