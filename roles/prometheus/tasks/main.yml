@@ -9,31 +9,25 @@
     name: prometheus_enable
     value: 'YES'
     state: present
-  register: rc_enable
+  notify: Restart prometheus
 
 - name: Set storage location
   community.general.sysrc:
     name: prometheus_data_dir
     value: '{{ prometheus_data_dir }}'
     state: "{{ prometheus_data_dir | ternary('present', 'absent') }}"
-  register: rc_storage
+  notify: Restart prometheus
 
 - name: Set storage retention time
   community.general.sysrc:
     name: prometheus_args
     value: '--storage.tsdb.retention.time={{ prometheus_retention_time }}'
     state: "{{ prometheus_retention_time | ternary('present', 'absent') }}"
-  register: rc_retention
+  notify: Restart prometheus
 
 - name: Configure prometheus
   ansible.builtin.template:
     src: prometheus.yml.j2
     dest: /usr/local/etc/prometheus.yml
-  register: config
-
-- name: Restart prometheus service
-  ansible.builtin.service:
-    name: prometheus
-    state: restarted
-  when: rc_enable.changed or rc_storage.changed or rc_retention.changed or config.changed
+  notify: Restart prometheus
 ...
