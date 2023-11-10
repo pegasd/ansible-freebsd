@@ -9,19 +9,13 @@
     name: plexmediaserver_enable
     value: 'YES'
     state: present
-  register: rc_enable
+  notify: Restart Plex
 
 - name: Configure Plex data directory
   community.general.sysrc:
     name: plexmediaserver_support_path
     value: '{{ plex_data_dir }}'
     state: present
-  register: rc_data_dir
+  notify: Restart Plex
   when: plex_data_dir
-
-- name: Restart Plex service
-  ansible.builtin.service:
-    name: plexmediaserver
-    state: restarted
-  when: rc_enable.changed or rc_data_dir.changed
 ...
