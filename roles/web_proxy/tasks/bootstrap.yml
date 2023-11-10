@@ -9,7 +9,7 @@
     - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot-nginx'
 
 - name: Enable nginx at startup
-  community.general.sysrc:
+  ansible.builtin.service:
     name: nginx_enable
     value: 'YES'
   notify: Restart nginx
