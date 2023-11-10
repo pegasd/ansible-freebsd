@@ -12,7 +12,7 @@
   ansible.builtin.template:
     src: wg0.conf.j2
     dest: '{{ wireguard_conf_directory }}/{{ wireguard_interface }}.conf'
-  register: config
+  notify: Restart wireguard
 
 - name: Directory for client configs
   ansible.builtin.file:
@@ -35,18 +35,12 @@
     name: wireguard_enable
     value: 'YES'
     state: present
-  register: rc_enable
+  notify: Restart wireguard
 
 - name: Configure wireguard interface
   community.general.sysrc:
     name: wireguard_interfaces
     value: '{{ wireguard_interface }}'
     state: present
-  register: rc_interfaces
-
-- name: Restart wireguard service
-  ansible.builtin.service:
-    name: wireguard
-    state: restarted
-  when: config.changed or rc_enable.changed or rc_interfaces.changed
+  notify: Restart wireguard
 ...
