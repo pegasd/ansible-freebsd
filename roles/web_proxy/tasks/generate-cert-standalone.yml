@@ -7,7 +7,7 @@
       --standalone
       --pre-hook {{ web_proxy_letsencrypt_directory }}/renewal-hooks/pre/stop_services
       --post-hook {{ web_proxy_letsencrypt_directory }}/renewal-hooks/post/start_services
-      -d {{ vhost.name }} --email {{ certbot_email }}
+      -d {{ vhost.name }} --email {{ web_proxy_certbot_email }}
     creates: '{{ web_proxy_letsencrypt_directory }}/live/{{ vhost.name }}/cert.pem'
   notify: Restart nginx
 ...
