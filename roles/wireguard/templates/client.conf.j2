@@ -1,3 +1,4 @@
+{{ ansible_managed | comment }}
 [Interface]
 Address = {{ client.address }}/{{ wireguard_network | split('/') | last }}
 PrivateKey = {{ client.private_key }}
