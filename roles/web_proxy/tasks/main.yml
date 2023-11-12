@@ -1,13 +1,13 @@
 ---
 - name: Bootstrap
-  ansible.builtin.include_tasks: bootstrap.yml
+  ansible.builtin.import_tasks: bootstrap.yml
 
 - name: Bootstrap for standalone certificate generation
-  ansible.builtin.include_tasks: bootstrap-standalone.yml
+  ansible.builtin.import_tasks: bootstrap-standalone.yml
   when: web_proxy_certbot_method == 'standalone'
 
 - name: Bootstrap for Cloudflare certificate generation
-  ansible.builtin.include_tasks: bootstrap-cloudflare.yml
+  ansible.builtin.import_tasks: bootstrap-cloudflare.yml
   when: web_proxy_certbot_method == 'cloudflare'
 
 - name: Generate certificate using standalone validation
@@ -31,5 +31,5 @@
     loop_var: vhost
 
 - name: Cron job to renew certificates
-  ansible.builtin.include_tasks: renew-cron.yml
+  ansible.builtin.import_tasks: renew-cron.yml
 ...
