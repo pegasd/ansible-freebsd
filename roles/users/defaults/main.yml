@@ -1,4 +1,3 @@
 ---
-user_groups:
-  - wheel
+users_groups: [ wheel ]
 ...

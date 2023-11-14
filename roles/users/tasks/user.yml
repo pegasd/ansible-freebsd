@@ -3,7 +3,7 @@
   ansible.builtin.user:
     name: '{{ user.key }}'
     comment: '{{ user.value.name }}'
-    groups: '{{ user_groups }}'
+    groups: '{{ users_groups }}'
     append: true
 
 - name: 'Authorized keys from GitHub for {{ user.key }}'
@@ -16,6 +16,7 @@
   ansible.builtin.git:
     dest: '/home/{{ user.key }}/.dotfiles'
     repo: '{{ user.value.gh_dotfiles }}'
+  become: yes
   become_user: '{{ user.key }}'
 
 - name: 'Rsync ~/.dotfiles -> ~ for {{ user.key }}'
@@ -28,5 +29,6 @@
       - '--exclude=LICENSE'
       - '--exclude=*.md'
   delegate_to: '{{ inventory_hostname }}'
+  become: yes
   become_user: '{{ user.key }}'
 ...
