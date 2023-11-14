@@ -13,7 +13,7 @@
     key: '{{ user.value.gh_keys }}'
 
 - name: 'Bring over dotfiles for {{ user.key }}'
-  ansible.builtin.git:
+  ansible.builtin.git: # noqa: latest[git] # I'll just have to take the risk
     dest: '/home/{{ user.key }}/.dotfiles'
     repo: '{{ user.value.gh_dotfiles }}'
     update: no
