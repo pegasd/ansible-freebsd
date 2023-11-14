@@ -24,6 +24,7 @@
   ansible.posix.synchronize:
     src: '/home/{{ user.key }}/.dotfiles/'
     dest: '/home/{{ user.key }}'
+    archive: false
     recursive: true
     rsync_opts:
       - '--exclude=.git'
