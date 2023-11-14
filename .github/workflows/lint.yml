@@ -28,6 +28,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip3 install ansible ansible-lint
-      - run: ansible-galaxy collection install community.general
       - run: ansible-lint *
 ...

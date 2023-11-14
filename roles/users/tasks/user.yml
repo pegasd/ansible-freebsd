@@ -1,0 +1,36 @@
+---
+- name: 'Create user {{ user.key }}'
+  ansible.builtin.user:
+    name: '{{ user.key }}'
+    comment: '{{ user.value.name }}'
+    groups: '{{ users_groups }}'
+    append: true
+
+- name: 'Authorized keys from GitHub for {{ user.key }}'
+  ansible.posix.authorized_key:
+    user: '{{ user.key }}'
+    state: present
+    key: '{{ user.value.gh_keys }}'
+
+- name: 'Bring over dotfiles for {{ user.key }}'
+  ansible.builtin.git: # noqa: latest[git] # I'll just have to take the risk
+    dest: '/home/{{ user.key }}/.dotfiles'
+    repo: '{{ user.value.gh_dotfiles }}'
+    update: no
+  become: yes
+  become_user: '{{ user.key }}'
+
+- name: 'Rsync ~/.dotfiles -> ~ for {{ user.key }}'
+  ansible.posix.synchronize:
+    src: '/home/{{ user.key }}/.dotfiles/'
+    dest: '/home/{{ user.key }}'
+    archive: false
+    recursive: true
+    rsync_opts:
+      - '--exclude=.git'
+      - '--exclude=LICENSE'
+      - '--exclude=*.md'
+  delegate_to: '{{ inventory_hostname }}'
+  become: yes
+  become_user: '{{ user.key }}'
+...
