@@ -16,6 +16,7 @@
   ansible.builtin.git:
     dest: '/home/{{ user.key }}/.dotfiles'
     repo: '{{ user.value.gh_dotfiles }}'
+    update: no
   become: yes
   become_user: '{{ user.key }}'
 
