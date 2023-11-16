@@ -4,4 +4,10 @@
   with_dict: '{{ users }}'
   loop_control:
     loop_var: user
+
+- name: Manage static users
+  ansible.builtin.include_tasks: user_static.yml
+  with_dict: '{{ users_static }}'
+  loop_control:
+    loop_var: user
 ...

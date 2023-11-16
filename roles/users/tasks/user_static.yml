@@ -1,0 +1,13 @@
+---
+- name: 'Manage group for user {{ user.key }}'
+  ansible.builtin.group:
+    name: '{{ user.key }}'
+    gid: '{{ user.value.uid }}'
+
+- name: 'Manage user {{ user.key }}'
+  ansible.builtin.user:
+    name: '{{ user.key }}'
+    uid: '{{ user.value.uid }}'
+    home: /nonexistent
+    shell: /usr/sbin/nologin
+...
