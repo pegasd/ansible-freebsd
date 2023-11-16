@@ -1,5 +1,4 @@
 ---
-users:
 users_groups: [ wheel ]
-users_static: { }
+users_static: {}
 ...
