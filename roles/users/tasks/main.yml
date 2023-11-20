@@ -10,4 +10,12 @@
   with_dict: '{{ users_static }}'
   loop_control:
     loop_var: user
+
+- name: Manage storage users
+  ansible.builtin.user:
+    name: '{{ item.key }}'
+    groups: '{{ users_storage_group }}'
+    append: true
+  with_dict: '{{ users }}'
+  when: users_storage_group
 ...
