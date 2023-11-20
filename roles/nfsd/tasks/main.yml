@@ -5,11 +5,12 @@
     value: 'YES'
     state: present
   loop:
+    - nfs_server_enable
+    - nfsv4_server_enable
+    - mountd_enable
     - rpcbind_enable
     - rpc_lockd_enable
     - rpc_statd_enable
-    - nfs_server_enable
-    - mountd_enable
   notify: Restart NFS services
 
 - name: Set NFS server arguments
