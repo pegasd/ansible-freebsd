@@ -18,6 +18,22 @@
   notify: Restart lidarr
   when: media_lidarr_datadir
 
+- name: Create and chown lidarr PID directory
+  ansible.builtin.file:
+    path: '{{ media_lidarr_datadir }}/pid'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart lidarr
+
+- name: Configure lidarr PID directory
+  community.general.sysrc:
+    name: lidarr_pid_dir
+    value: '{{ media_lidarr_datadir }}/pid'
+  notify: Restart lidarr
+  when: media_lidarr_datadir
+
 - name: Configure lidarr user
   community.general.sysrc:
     name: lidarr_user
