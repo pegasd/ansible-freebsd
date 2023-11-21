@@ -1,0 +1,29 @@
+---
+- name: Sonarr package
+  community.general.pkgng:
+    name: sonarr
+    state: present
+
+- name: Enable sonarr service
+  community.general.sysrc:
+    name: sonarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart sonarr
+
+- name: Configure sonarr data directory
+  community.general.sysrc:
+    name: sonarr_data_dir
+    value: '{{ media_sonarr_datadir }}'
+  notify: Restart sonarr
+  when: media_sonarr_datadir
+
+- name: Configure sonarr user
+  community.general.sysrc:
+    name: sonarr_user
+    value: '{{ media_user }}'
+  notify: Restart sonarr
+
+- name: Flush handlers to restart sonarr service here
+  ansible.builtin.meta: flush_handlers
+...

@@ -1,0 +1,29 @@
+---
+- name: Prowlarr package
+  community.general.pkgng:
+    name: prowlarr
+    state: present
+
+- name: Enable prowlarr service
+  community.general.sysrc:
+    name: prowlarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart prowlarr
+
+- name: Configure prowlarr data directory
+  community.general.sysrc:
+    name: prowlarr_data_dir
+    value: '{{ media_prowlarr_datadir }}'
+  notify: Restart prowlarr
+  when: media_prowlarr_datadir
+
+- name: Configure prowlarr user
+  community.general.sysrc:
+    name: prowlarr_user
+    value: '{{ media_user }}'
+  notify: Restart prowlarr
+
+- name: Flush handlers to restart prowlarr service here
+  ansible.builtin.meta: flush_handlers
+...

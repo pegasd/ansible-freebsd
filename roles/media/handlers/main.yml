@@ -1,0 +1,31 @@
+---
+- name: Restart sonarr
+  ansible.builtin.service:
+    name: sonarr
+    state: restarted
+
+- name: Restart radarr
+  ansible.builtin.service:
+    name: radarr
+    state: restarted
+
+- name: Restart lidarr
+  ansible.builtin.service:
+    name: lidarr
+    state: restarted
+
+- name: Restart readarr
+  ansible.builtin.service:
+    name: readarr
+    state: restarted
+
+- name: Restart prowlarr
+  ansible.builtin.service:
+    name: prowlarr
+    state: restarted
+
+- name: Restart overseerr
+  ansible.builtin.service:
+    name: overseerr
+    state: restarted
+...

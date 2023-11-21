@@ -1,0 +1,29 @@
+---
+- name: Readarr package
+  community.general.pkgng:
+    name: readarr
+    state: present
+
+- name: Enable readarr service
+  community.general.sysrc:
+    name: readarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart readarr
+
+- name: Configure readarr data directory
+  community.general.sysrc:
+    name: readarr_data_dir
+    value: '{{ media_readarr_datadir }}'
+  notify: Restart readarr
+  when: media_readarr_datadir
+
+- name: Configure readarr user
+  community.general.sysrc:
+    name: readarr_user
+    value: '{{ media_user }}'
+  notify: Restart readarr
+
+- name: Flush handlers to restart readarr service here
+  ansible.builtin.meta: flush_handlers
+...

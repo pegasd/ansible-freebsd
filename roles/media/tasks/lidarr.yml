@@ -1,0 +1,35 @@
+---
+- name: Lidarr package
+  community.general.pkgng:
+    name: lidarr
+    state: present
+
+- name: Enable lidarr service
+  community.general.sysrc:
+    name: lidarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart lidarr
+
+- name: Configure lidarr data directory
+  community.general.sysrc:
+    name: lidarr_data_dir
+    value: '{{ media_lidarr_datadir }}'
+  notify: Restart lidarr
+  when: media_lidarr_datadir
+
+- name: Configure lidarr user
+  community.general.sysrc:
+    name: lidarr_user
+    value: '{{ media_user }}'
+  notify: Restart lidarr
+
+- name: Configure lidarr group
+  community.general.sysrc:
+    name: lidarr_group
+    value: '{{ media_user }}'
+  notify: Restart lidarr
+
+- name: Flush handlers to restart lidarr service here
+  ansible.builtin.meta: flush_handlers
+...

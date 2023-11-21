@@ -1,0 +1,28 @@
+---
+# shared
+media_user:
+
+# sonarr
+media_sonarr:
+media_sonarr_datadir:
+
+# radarr
+media_radarr:
+media_radarr_datadir:
+
+# lidarr
+media_lidarr:
+media_lidarr_datadir:
+
+# readarr
+media_readarr:
+media_readarr_datadir:
+
+# prowlarr
+media_prowlarr:
+media_prowlarr_datadir:
+
+# overseerr
+media_overseerr:
+media_overseerr_datadir:
+...
