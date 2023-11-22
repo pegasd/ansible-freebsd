@@ -20,17 +20,13 @@
     mode: '0775'
   notify: Restart prowlarr
 
-- name: Configure prowlarr data directory
+- name: Configure prowlarr data and PID directories
   community.general.sysrc:
-    name: prowlarr_data_dir
+    name: '{{ item }}'
     value: '{{ media_prowlarr_datadir }}'
-  notify: Restart prowlarr
-  when: media_prowlarr_datadir
-
-- name: Configure prowlarr PID directory
-  community.general.sysrc:
-    name: prowlarr_pid_dir
-    value: '{{ media_prowlarr_datadir }}'
+  loop:
+    - prowlarr_data_dir
+    - prowlarr_pid_dir
   notify: Restart prowlarr
   when: media_prowlarr_datadir
 

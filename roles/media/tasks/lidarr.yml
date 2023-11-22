@@ -20,17 +20,13 @@
     mode: '0775'
   notify: Restart lidarr
 
-- name: Configure lidarr data directory
+- name: Configure lidarr data and PID directories
   community.general.sysrc:
-    name: lidarr_data_dir
+    name: '{{ item }}'
     value: '{{ media_lidarr_datadir }}'
-  notify: Restart lidarr
-  when: media_lidarr_datadir
-
-- name: Configure lidarr PID directory
-  community.general.sysrc:
-    name: lidarr_pid_dir
-    value: '{{ media_lidarr_datadir }}'
+  loop:
+    - lidarr_data_dir
+    - lidarr_pid_dir
   notify: Restart lidarr
   when: media_lidarr_datadir
 
