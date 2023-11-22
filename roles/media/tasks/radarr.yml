@@ -1,0 +1,29 @@
+---
+- name: Radarr package
+  community.general.pkgng:
+    name: radarr
+    state: present
+
+- name: Enable radarr service
+  community.general.sysrc:
+    name: radarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart radarr
+
+- name: Configure radarr data directory
+  community.general.sysrc:
+    name: radarr_data_dir
+    value: '{{ media_radarr_datadir }}'
+  notify: Restart radarr
+  when: media_radarr_datadir
+
+- name: Configure radarr user
+  community.general.sysrc:
+    name: radarr_user
+    value: '{{ media_user }}'
+  notify: Restart radarr
+
+- name: Flush handlers to restart radarr service here
+  ansible.builtin.meta: flush_handlers
+...

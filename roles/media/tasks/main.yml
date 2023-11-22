@@ -1,0 +1,21 @@
+---
+- name: Sonarr
+  ansible.builtin.import_tasks: sonarr.yml
+  when: media_sonarr
+
+- name: Radarr
+  ansible.builtin.import_tasks: radarr.yml
+  when: media_radarr
+
+- name: Lidarr
+  ansible.builtin.import_tasks: lidarr.yml
+  when: media_lidarr
+
+- name: Readarr
+  ansible.builtin.import_tasks: readarr.yml
+  when: media_readarr
+
+- name: Prowlarr
+  ansible.builtin.import_tasks: prowlarr.yml
+  when: media_prowlarr
+...

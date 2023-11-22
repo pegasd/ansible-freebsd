@@ -1,0 +1,44 @@
+---
+- name: Prowlarr package
+  community.general.pkgng:
+    name: prowlarr
+    state: present
+
+- name: Enable prowlarr service
+  community.general.sysrc:
+    name: prowlarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart prowlarr
+
+- name: Create and chown prowlarr data directory
+  ansible.builtin.file:
+    path: '{{ media_prowlarr_datadir }}'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart prowlarr
+
+- name: Configure prowlarr data and PID directories
+  community.general.sysrc:
+    name: '{{ item }}'
+    value: '{{ media_prowlarr_datadir }}'
+  loop:
+    - prowlarr_data_dir
+    - prowlarr_pid_dir
+  notify: Restart prowlarr
+  when: media_prowlarr_datadir
+
+- name: Configure prowlarr user and group
+  community.general.sysrc:
+    name: '{{ item }}'
+    value: '{{ media_user }}'
+  loop:
+    - prowlarr_user
+    - prowlarr_group
+  notify: Restart prowlarr
+
+- name: Flush handlers to restart prowlarr service here
+  ansible.builtin.meta: flush_handlers
+...

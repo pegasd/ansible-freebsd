@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Media server environment based around servarr pack
+  role_name: media
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+  min_ansible_version: '2.15'
+...

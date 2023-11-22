@@ -1,0 +1,44 @@
+---
+- name: Readarr package
+  community.general.pkgng:
+    name: readarr
+    state: present
+
+- name: Enable readarr service
+  community.general.sysrc:
+    name: readarr_enable
+    value: 'YES'
+    state: present
+  notify: Restart readarr
+
+- name: Create and chown readarr data directory
+  ansible.builtin.file:
+    path: '{{ media_readarr_datadir }}'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart readarr
+
+- name: Configure readarr data and PID directories
+  community.general.sysrc:
+    name: '{{ item }}'
+    value: '{{ media_readarr_datadir }}'
+  loop:
+    - readarr_data_dir
+    - readarr_pid_dir
+  notify: Restart readarr
+  when: media_readarr_datadir
+
+- name: Configure readarr user and group
+  community.general.sysrc:
+    name: '{{ item }}'
+    value: '{{ media_user }}'
+  loop:
+    - readarr_user
+    - readarr_group
+  notify: Restart readarr
+
+- name: Flush handlers to restart readarr service here
+  ansible.builtin.meta: flush_handlers
+...
