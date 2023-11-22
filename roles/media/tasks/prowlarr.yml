@@ -11,6 +11,15 @@
     state: present
   notify: Restart prowlarr
 
+- name: Create and chown prowlarr data directory
+  ansible.builtin.file:
+    path: '{{ media_prowlarr_datadir }}'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart prowlarr
+
 - name: Configure prowlarr data directory
   community.general.sysrc:
     name: prowlarr_data_dir
@@ -18,32 +27,20 @@
   notify: Restart prowlarr
   when: media_prowlarr_datadir
 
-- name: Create and chown prowlarr PID directory
-  ansible.builtin.file:
-    path: '{{ media_prowlarr_datadir }}/pid'
-    state: directory
-    owner: '{{ media_user }}'
-    group: '{{ media_user }}'
-    mode: '0775'
-  notify: Restart prowlarr
-
 - name: Configure prowlarr PID directory
   community.general.sysrc:
     name: prowlarr_pid_dir
-    value: '{{ media_prowlarr_datadir }}/pid'
+    value: '{{ media_prowlarr_datadir }}'
   notify: Restart prowlarr
   when: media_prowlarr_datadir
 
-- name: Configure prowlarr user
+- name: Configure prowlarr user and group
   community.general.sysrc:
-    name: prowlarr_user
+    name: '{{ item }}'
     value: '{{ media_user }}'
-  notify: Restart prowlarr
-
-- name: Configure prowlarr group
-  community.general.sysrc:
-    name: prowlarr_group
-    value: '{{ media_user }}'
+  loop:
+    - prowlarr_user
+    - prowlarr_group
   notify: Restart prowlarr
 
 - name: Flush handlers to restart prowlarr service here
