@@ -23,9 +23,4 @@
   ansible.builtin.service:
     name: prowlarr
     state: restarted
-
-- name: Restart overseerr
-  ansible.builtin.service:
-    name: overseerr
-    state: restarted
 ...

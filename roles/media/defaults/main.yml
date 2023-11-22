@@ -21,8 +21,4 @@ media_readarr_datadir:
 # prowlarr
 media_prowlarr:
 media_prowlarr_datadir:
-
-# overseerr
-media_overseerr:
-media_overseerr_datadir:
 ...
