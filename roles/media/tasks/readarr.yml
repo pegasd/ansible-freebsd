@@ -11,17 +11,32 @@
     state: present
   notify: Restart readarr
 
-- name: Configure readarr data directory
+- name: Create and chown readarr data directory
+  ansible.builtin.file:
+    path: '{{ media_readarr_datadir }}'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart readarr
+
+- name: Configure readarr data and PID directories
   community.general.sysrc:
-    name: readarr_data_dir
+    name: '{{ item }}'
     value: '{{ media_readarr_datadir }}'
+  loop:
+    - readarr_data_dir
+    - readarr_pid_dir
   notify: Restart readarr
   when: media_readarr_datadir
 
-- name: Configure readarr user
+- name: Configure readarr user and group
   community.general.sysrc:
-    name: readarr_user
+    name: '{{ item }}'
     value: '{{ media_user }}'
+  loop:
+    - readarr_user
+    - readarr_group
   notify: Restart readarr
 
 - name: Flush handlers to restart readarr service here
