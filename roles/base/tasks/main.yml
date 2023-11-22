@@ -1,21 +1,18 @@
 ---
 - name: Install recommended packages
   community.general.pkgng:
-    name: '{{ item }}'
+    name: '{{ base_packages }}'
     state: present
-  loop: '{{ base_packages }}'
 
 - name: Remove outdated / unneeded packages
   community.general.pkgng:
-    name: '{{ item }}'
+    name: '{{ base_packages_absent }}'
     state: absent
-  loop: '{{ base_packages_absent }}'
 
 - name: Install additional packages
   community.general.pkgng:
-    name: '{{ item }}'
+    name: '{{ base_extra_packages }}'
     state: present
-  loop: '{{ base_extra_packages }}'
 
 - name: Disable sendmail
   community.general.sysrc:

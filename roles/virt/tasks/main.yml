@@ -1,12 +1,11 @@
 ---
 - name: Bhyve packages
   community.general.pkgng:
-    name: plexmediaserver
+    name:
+      - bhyve-firmware
+      - grub2-bhyve
+      - vm-bhyve
     state: present
-  loop:
-    - bhyve-firmware
-    - grub2-bhyve
-    - vm-bhyve
 
 - name: Enable VMM module
   community.general.sysrc:

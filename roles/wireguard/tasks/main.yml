@@ -1,12 +1,11 @@
 ---
 - name: WireGuard packages
   community.general.pkgng:
-    name: '{{ item }}'
+    name:
+      - wireguard
+      - wireguard-tools
+      - libqrencode
     state: present
-  loop:
-    - wireguard
-    - wireguard-tools
-    - libqrencode
 
 - name: WireGuard server configuration
   ansible.builtin.template:

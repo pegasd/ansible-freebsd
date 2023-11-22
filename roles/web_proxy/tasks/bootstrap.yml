@@ -1,12 +1,11 @@
 ---
 - name: Nginx and certbot packages
   community.general.pkgng:
-    name: '{{ item }}'
+    name:
+      - nginx
+      - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot'
+      - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot-nginx'
     state: present
-  loop:
-    - nginx
-    - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot'
-    - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot-nginx'
 
 - name: Enable nginx at startup
   community.general.sysrc:
