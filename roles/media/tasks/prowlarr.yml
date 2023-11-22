@@ -18,9 +18,31 @@
   notify: Restart prowlarr
   when: media_prowlarr_datadir
 
+- name: Create and chown prowlarr PID directory
+  ansible.builtin.file:
+    path: '{{ media_prowlarr_datadir }}/pid'
+    state: directory
+    owner: '{{ media_user }}'
+    group: '{{ media_user }}'
+    mode: '0775'
+  notify: Restart prowlarr
+
+- name: Configure prowlarr PID directory
+  community.general.sysrc:
+    name: prowlarr_pid_dir
+    value: '{{ media_prowlarr_datadir }}/pid'
+  notify: Restart prowlarr
+  when: media_prowlarr_datadir
+
 - name: Configure prowlarr user
   community.general.sysrc:
     name: prowlarr_user
+    value: '{{ media_user }}'
+  notify: Restart prowlarr
+
+- name: Configure prowlarr group
+  community.general.sysrc:
+    name: prowlarr_group
     value: '{{ media_user }}'
   notify: Restart prowlarr
 
