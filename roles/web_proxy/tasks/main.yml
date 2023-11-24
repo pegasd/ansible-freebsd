@@ -9,5 +9,5 @@
     loop_var: cert
 
 - name: Configure NGINX vhosts
-  ansible.builtin.include_tasks: vhost-proxy.yml
+  ansible.builtin.import_tasks: vhost-proxy.yml
 ...
