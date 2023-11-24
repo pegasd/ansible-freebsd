@@ -30,8 +30,11 @@ http {
     ''      close;
   }
 
+  #
   # Virtual Hosts
+  #
 {% for vhost in web_proxy_vhosts %}
+  # {{ vhost.name }} -> {{ vhost.proxy_to }}
   server {
     listen      443 ssl http2;
     server_name {{ vhost.name }};
