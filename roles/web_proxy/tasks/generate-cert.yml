@@ -6,7 +6,6 @@
       --noninteractive --agree-tos
       --dns-cloudflare
       --dns-cloudflare-credentials /usr/local/etc/letsencrypt/cloudflare_auth.ini
-      --dns-cloudflare-propagation-seconds 30
       -d {{ cert }} --email {{ web_proxy_certbot_email }}
     creates: '/usr/local/etc/letsencrypt/live/{{ cert | replace("*.", "") }}/cert.pem'
   notify: Restart nginx
