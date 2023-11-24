@@ -29,8 +29,8 @@
   notify: Restart nginx
 
 - name: SSL proxy configuration
-  ansible.builtin.copy:
-    src: ssl-proxy.conf
+  ansible.builtin.template:
+    src: ssl-proxy.conf.j2
     dest: /usr/local/etc/nginx/ssl-proxy.conf
     mode: '0644'
   notify: Restart nginx
