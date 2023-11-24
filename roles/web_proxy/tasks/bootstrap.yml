@@ -5,6 +5,7 @@
       - nginx
       - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot'
       - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot-nginx'
+      - 'py{{ web_proxy_python_version | replace(".", "") }}-certbot-dns-cloudflare'
     state: present
 
 - name: Enable nginx at startup
@@ -13,27 +14,10 @@
     value: 'YES'
   notify: Restart nginx
 
-- name: VHost nginx directories
-  ansible.builtin.file:
-    state: directory
-    owner: root
-    group: wheel
-    mode: '0755'
-    path: '{{ web_proxy_nginx_conf_directory }}/vhosts'
-
-- name: Nginx configuration
-  ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: '{{ web_proxy_nginx_conf_directory }}/nginx.conf'
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: Restart nginx
-
 - name: Generate DH parameters
   ansible.builtin.command:
-    cmd: 'openssl dhparam -out {{ web_proxy_nginx_conf_directory }}/dhparam.pem 2048'
-    creates: '{{ web_proxy_nginx_conf_directory }}/dhparam.pem'
+    cmd: openssl dhparam -out /usr/local/etc/nginx/dhparam.pem 2048
+    creates: /usr/local/etc/nginx/dhparam.pem
   notify: Restart nginx
 
 - name: Copy SSL nginx options
@@ -41,6 +25,30 @@
     mode: preserve
     remote_src: true
     src: '/usr/local/lib/python{{ web_proxy_python_version }}/site-packages/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf'
-    dest: '{{ web_proxy_nginx_conf_directory }}/options-ssl-nginx.conf'
+    dest: /usr/local/etc/nginx/options-ssl-nginx.conf
   notify: Restart nginx
+
+- name: SSL proxy configuration
+  ansible.builtin.template:
+    src: ssl-proxy.conf.j2
+    dest: /usr/local/etc/nginx/ssl-proxy.conf
+    mode: '0644'
+  notify: Restart nginx
+
+- name: Cloudflare authentication
+  ansible.builtin.template:
+    src: cloudflare.auth.j2
+    dest: /usr/local/etc/letsencrypt/cloudflare_auth.ini
+    mode: '0600'
+  diff: false
+
+- name: Cron job for certificate renewal
+  ansible.builtin.cron:
+    name: letsencrypt renew
+    job: certbot renew
+    minute: '{{ web_proxy_certbot_renew_cron_minute }}'
+    hour: '{{ web_proxy_certbot_renew_cron_hour }}'
+    weekday: '{{ web_proxy_certbot_renew_cron_weekday }}'
+    user: root
+    state: "{{ web_proxy_certbot_renew_cron_enable | ternary('present', 'absent') }}"
 ...
