@@ -1,0 +1,6 @@
+---
+- name: Restart glances
+  ansible.builtin.service:
+    name: glances
+    state: restarted
+...

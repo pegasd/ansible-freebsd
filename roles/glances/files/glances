@@ -1,0 +1,28 @@
+#! /bin/sh
+
+# PROVIDE: glances
+# REQUIRE: LOGIN DAEMON NETWORKING
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf to enable glances:
+#
+#glances_enable="YES"
+
+. /etc/rc.subr
+
+name="glances"
+rcvar="glances_enable"
+
+load_rc_config $name
+
+: ${glances_enable:=NO}
+: ${glances_args:=}
+
+pidfile="/var/run/glances.pid"
+procname="/usr/local/bin/glances"
+command_interpreter="/usr/local/bin/python3.9"
+command="/usr/sbin/daemon"
+command_args="-f -p ${pidfile} -T ${name} ${procname} -w ${glances_args}"
+
+run_rc_command "$1"

@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple glances configuration
+  role_name: glances
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+  min_ansible_version: '2.15'
+...

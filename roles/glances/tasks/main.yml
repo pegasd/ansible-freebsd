@@ -1,0 +1,32 @@
+---
+- name: Glances packages
+  community.general.pkgng:
+    name:
+      - py39-glances
+      - py39-bottle
+    state: present
+
+- name: Manage rc.d script for webserver
+  ansible.builtin.copy:
+    src: glances
+    dest: /usr/local/etc/rc.d/glances
+    owner: root
+    group: wheel
+    mode: '0755'
+  notify: Restart glances
+
+- name: Enable glances service
+  community.general.sysrc:
+    name: glances_enable
+    value: 'YES'
+    state: present
+  notify: Restart glances
+
+- name: Configure glances
+  community.general.sysrc:
+    name: glances_args
+    value: '{{ glances_command_arguments }}'
+    state: present
+  when: glances_command_arguments
+  notify: Restart glances
+...
