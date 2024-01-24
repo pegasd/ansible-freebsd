@@ -15,6 +15,11 @@ rule_files:
 scrape_configs:
 {% for job in prometheus_scrape_configs %}
   - job_name: {{ job.name }}
+{% if 'extra_parameters' in job %}
+{% for parameter in job.extra_parameters %}
+    {{ parameter }}: {{ job.extra_parameters[parameter] }}
+{% endfor %}
+{% endif %}
     static_configs:
 {% for job_target in job.targets %}
       # {{ job_target.comment }}
