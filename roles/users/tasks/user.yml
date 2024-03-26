@@ -25,6 +25,7 @@
     src: '/home/{{ user.key }}/.dotfiles/'
     dest: '/home/{{ user.key }}'
     archive: false
+    times: true
     recursive: true
     rsync_opts:
       - '--exclude=.git'
