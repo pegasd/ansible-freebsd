@@ -1,0 +1,13 @@
+---
+wg_client_conf_directory: /usr/local/etc/wireguard
+
+wg_client_network: '10.0.0.0/24'
+
+wg_client_interface: 'wg0'
+wg_client_interface_address: '10.0.0.2'
+wg_client_interface_private_key:
+
+wg_client_peer_public_key:
+wg_client_peer_endpoint:
+wg_client_peer_keepalive: 60
+...

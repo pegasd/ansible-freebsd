@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: pegasd
+  description: Simple WireGuard client configuration
+  role_name: wg_client
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+  min_ansible_version: '2.15'
+...

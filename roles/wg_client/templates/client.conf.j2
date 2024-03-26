@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+[Interface]
+Address = {{ wg_client_interface_address }}/{{ wg_client_network | split('/') | last }}
+PrivateKey = {{ wg_client_interface_private_key }}
+
+[Peer]
+PublicKey = {{ wg_client_peer_public_key }}
+AllowedIPs = {{ wg_client_network }}
+Endpoint = {{ wg_client_peer_endpoint }}
+PersistentKeepalive = {{ wg_client_peer_keepalive }}

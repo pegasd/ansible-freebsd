@@ -1,0 +1,30 @@
+---
+- name: WireGuard package
+  community.general.pkgng:
+    name:
+      - wireguard
+    state: present
+
+- name: WireGuard client configuration
+  ansible.builtin.template:
+    src: client.conf.j2
+    dest: '{{ wg_client_conf_directory }}/{{ wg_client_interface }}.conf'
+    owner: root
+    group: wheel
+    mode: '0600'
+  notify: Restart wireguard
+
+- name: Enable wireguard
+  community.general.sysrc:
+    name: wireguard_enable
+    value: 'YES'
+    state: present
+  notify: Restart wireguard
+
+- name: Configure wireguard interface
+  community.general.sysrc:
+    name: wireguard_interfaces
+    value: '{{ wg_client_interface }}'
+    state: present
+  notify: Restart wireguard
+...
