@@ -2,7 +2,7 @@
 - name: WireGuard package
   community.general.pkgng:
     name:
-      - wireguard
+      - wireguard-tools
     state: present
 
 - name: WireGuard client configuration
