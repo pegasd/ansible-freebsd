@@ -18,11 +18,17 @@ server:
 
 {% for zone in unbound_zones %}
   local-zone: "{{ zone.name }}." {{ zone.type }}
-{% for record in zone.records %}
+{% for record in zone.records if record.type == 'IN A' %}
     local-data: "{{ record.name }}.{{ zone.name }}. {{ record.type }} {{ record.dest }}"
 {% if 'ptr' in record and record.ptr %}
     local-data-ptr: "{{ record.dest }} {{ record.name }}.{{ zone.name }}"
 {% endif %}
+{% endfor %}
+{% for record in zone.records if record.type == 'CNAME' %}
+    local-data: "{{ record.name }}.{{ zone.name }}. {{ record.type }} {{ record.dest }}"
+{% endfor %}
+{% for record in zone.records if not record.type in [ 'IN A', 'CNAME' ] %}
+    local-data: "{{ record.name }}.{{ zone.name }}. {{ record.type }} {{ record.dest }}"
 {% endfor %}
 
 {% endfor %}
