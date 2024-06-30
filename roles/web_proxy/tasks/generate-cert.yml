@@ -4,6 +4,7 @@
     cmd: >-
       certbot certonly
       --noninteractive --agree-tos
+      --renew-hook 'service nginx reload'
       --dns-cloudflare
       --dns-cloudflare-credentials /usr/local/etc/letsencrypt/cloudflare_auth.ini
       -d {{ cert }} --email {{ web_proxy_certbot_email }}
