@@ -1,5 +1,5 @@
 ---
-- name: VaultWarden package
+- name: Vaultwarden package
   community.general.pkgng:
     name:
       - vaultwarden
@@ -9,6 +9,38 @@
   community.general.sysrc:
     name: vaultwarden_enable
     value: 'YES'
+    state: present
+  notify: Restart vaultwarden
+
+- name: Create waultwarden group
+  ansible.builtin.group:
+    name: '{{ vaultwarden_user }}'
+
+- name: Create vaultwarden user
+  ansible.builtin.user:
+    name: '{{ vaultwarden_user }}'
+    group: '{{ vaultwarden_user }}'
+    home: /nonexistent
+    shell: /usr/sbin/nologin
+
+- name: Set vaultwarden user
+  community.general.sysrc:
+    name: vaultwarden_user
+    value: '{{ vaultwarden_user }}'
+    state: present
+  notify: Restart vaultwarden
+
+- name: Set vaultwarden group
+  community.general.sysrc:
+    name: vaultwarden_group
+    value: '{{ vaultwarden_user }}'
+    state: present
+  notify: Restart vaultwarden
+
+- name: Set vaultwarden directory
+  community.general.sysrc:
+    name: vaultwarden_chdir
+    value: '{{ vaultwarden_directory }}'
     state: present
   notify: Restart vaultwarden
 ...

@@ -1,0 +1,4 @@
+---
+vaultwarden_directory: /usr/local/www/vaultwarden
+vaultwarden_user: vaultwarden
+...
