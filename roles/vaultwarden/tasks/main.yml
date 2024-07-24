@@ -1,0 +1,14 @@
+---
+- name: VaultWarden package
+  community.general.pkgng:
+    name:
+      - vaultwarden
+    state: present
+
+- name: Enable VaultWarden
+  community.general.sysrc:
+    name: vaultwarden_enable
+    value: 'YES'
+    state: present
+  notify: Restart vaultwarden
+...
