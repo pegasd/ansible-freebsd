@@ -2,8 +2,8 @@
 - name: Glances packages
   community.general.pkgng:
     name:
-      - py39-glances
-      - py39-bottle
+      - 'py{{ glances_python_version | replace(".", "") }}-glances'
+      - 'py{{ glances_python_version | replace(".", "") }}-bottle'
     state: present
 
 - name: Manage rc.d script for webserver

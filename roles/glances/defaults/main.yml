@@ -1,3 +1,5 @@
 ---
 glances_command_arguments:
+
+glances_python_version: '3.11'
 ...
