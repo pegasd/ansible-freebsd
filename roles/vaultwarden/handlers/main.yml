@@ -1,0 +1,6 @@
+---
+- name: Restart vaultwarden
+  ansible.builtin.service:
+    name: vaultwarden
+    state: restarted
+...

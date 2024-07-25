@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: pegasd
+  description: VaultWarden (Open Source BitWarden server) configuration.
+  role_name: vaultwarden
+  license: BSD
+  platforms:
+    - name: FreeBSD
+      versions: [ all ]
+  min_ansible_version: '2.15'
+...
