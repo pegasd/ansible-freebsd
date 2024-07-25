@@ -11,6 +11,13 @@
     state: present
   notify: Restart gitea
 
+- name: Disable conf check (breaks at init)
+  community.general.sysrc:
+    name: gitea_configcheck_enable
+    value: 'NO'
+    state: present
+  notify: Restart gitea
+
 - name: Configure gitea
   ansible.builtin.lineinfile:
     path: /usr/local/etc/gitea/conf/app.ini
