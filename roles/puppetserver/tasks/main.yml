@@ -1,0 +1,15 @@
+---
+- name: Puppetserver package
+  community.general.pkgng:
+    name:
+      - puppetserver8
+      - rubygem-r10k
+    state: present
+
+- name: Enable puppetesrver service
+  community.general.sysrc:
+    name: puppetserver_enable
+    value: 'YES'
+    state: present
+  notify: Restart puppetserver
+...

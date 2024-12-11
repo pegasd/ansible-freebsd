@@ -1,0 +1,3 @@
+# puppetserver
+
+Simple puppetserver configuration
