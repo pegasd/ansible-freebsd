@@ -1,0 +1,29 @@
+#! /bin/sh
+
+# PROVIDE: kopia
+# REQUIRE: LOGIN DAEMON NETWORKING
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf to enable kopia:
+#
+#kopia_enable="YES"
+
+. /etc/rc.subr
+
+name="kopia"
+rcvar="kopia_enable"
+
+load_rc_config $name
+
+: ${kopia_enable:=NO}
+: ${kopia_args:=}
+: ${kopia_user:=root}
+
+pidfile="/var/run/kopia.pid"
+logfile="/var/log/kopia.log"
+procname="/usr/local/bin/kopia"
+command="/usr/sbin/daemon"
+command_args="-u ${kopia_user} -o ${logfile} -p ${pidfile} ${procname} ${kopia_args}"
+
+run_rc_command "$1"
