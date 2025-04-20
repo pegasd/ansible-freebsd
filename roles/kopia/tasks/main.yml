@@ -1,0 +1,30 @@
+---
+- name: Kopia package
+  community.general.pkgng:
+    name: kopia
+    state: present
+
+- name: Manage rc.d script for kopia server
+  ansible.builtin.copy:
+    src: kopia
+    dest: /usr/local/etc/rc.d/kopia
+    owner: root
+    group: wheel
+    mode: '0755'
+  notify: Restart kopia
+
+- name: Enable kopia service
+  community.general.sysrc:
+    name: kopia_enable
+    value: 'YES'
+    state: present
+  notify: Restart kopia
+
+- name: Configure kopia
+  community.general.sysrc:
+    name: kopia_args
+    value: '{{ kopia_command_arguments }}'
+    state: present
+  when: kopia_command_arguments
+  notify: Restart kopia
+...
