@@ -1,0 +1,22 @@
+---
+- name: Install snoopy
+  ansible.builtin.copy:
+    src: snoopy
+    dest: /usr/local/bin/snoopy
+    owner: root
+    group: wheel
+    mode: '0755'
+
+- name: Monitor services
+  ansible.builtin.cron:
+    job: 'Watch over {{ name }}'
+    minute: '*'
+    hour: '*'
+    weekday: '*'
+    day: '*'
+    month: '*'
+    user: root
+  loop: '{{ snoopy_services }}'
+  loop_control:
+    loop_var: name
+...
