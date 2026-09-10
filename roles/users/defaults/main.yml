@@ -1,5 +1,5 @@
 ---
 users_groups: [ wheel ]
 users_static: {}
-users_storage_group:
+users_storage_group: false
 ...
