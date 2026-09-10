@@ -38,7 +38,8 @@ http {
 
   # {{ vhost.name }} -> {{ vhost.proxy_to }}
   server {
-    listen      443 ssl http2;
+    listen      443 ssl;
+    http2       on;
     server_name {{ vhost.name }};
 
     include             ssl-proxy.conf;
